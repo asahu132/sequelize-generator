@@ -1,11 +1,11 @@
 {
-  "name": "sequelize-generator",
+  "name": "json-to-sequelize",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build" : "tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,9 @@
   "homepage": "https://github.com/asahu132/sequelize-generator#readme",
   "devDependencies": {
     "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "@types/uuid": "^7.0.2",
+    "uuid": "^7.0.3"
   }
 }

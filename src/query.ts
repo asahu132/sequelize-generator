@@ -2,18 +2,19 @@ import {Cloneable} from "./cloneable";
 import {Sequelizable} from "./sequelize";
 import {Rule} from "./rule";
 import {SEQUELIZE_OPERATORS} from "./config";
+import {ObjectUtil} from "./common.utils";
 
 export class Query implements Sequelizable, Cloneable<Query> {
     public condition: string;
     public rules: any[];
 
-    constructor(condition?, rules?) {
+    constructor(condition?:any, rules?:any) {
         this.condition = condition;
         this.rules = rules ? this.getRules(rules) : [];
     }
 
-    getRules(rules) {
-        return rules.map(rule => {
+    getRules(rules:any) {
+        return rules.map((rule:any) => {
             if (rule.rules) {
                 rule = new Query(rule.condition, rule.rules);
 
@@ -28,7 +29,7 @@ export class Query implements Sequelizable, Cloneable<Query> {
         return this.rules.filter((rule) => rule.hasDynamicVariables()).length > 0;
     }
 
-    isSequalizedQuery(sequelized) {
+    isSequalizedQuery(sequelized:any) {
         const operators = Object.keys(sequelized);
         if (operators.length > 0) {
             return ObjectUtil.values(SEQUELIZE_OPERATORS).filter((op) => {

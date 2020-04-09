@@ -32,7 +32,7 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
         this.sortBy = sortBy ? sortBy.map(sort => new Sort(sort.columnName, sort.value)) : [];
     }
 
-    setTableDefinition(tableDefinition) {
+    setTableDefinition(tableDefinition:any) {
         this.getAllRules().forEach((rule) => {
             rule.setTableDefinition(tableDefinition);
         });
@@ -73,7 +73,7 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     sequelize() {
         const queryGroup = this.queryGroup.map(group => group.sequelize());
         const order = this.sortBy.map((sort) => sort.sequelize());
-        const sequalize = {};
+        const sequalize:any = {};
         if (order.length > 0) {
             sequalize['order'] = order;
         }
@@ -114,7 +114,7 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     }
 
     getAllRules(): Rule[] {
-        const allRules = this.queryGroup.reduce((result, group) => {
+        const allRules = this.queryGroup.reduce((result:any, group) => {
             const rules = group.getAllRules();
             if (rules.length > 0) {
                 rules[0].operator = this.queryGroupMergeOperator;

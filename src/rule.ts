@@ -8,13 +8,13 @@ export class Rule implements Sequelizable, Cloneable<Rule> {
     public isDynamic: boolean;
     public value: any;
     public operator: string;
-    public displayType;
+    public displayType:string;
     public columnLabel: string;
     public valueLabel: string;
     public tableName: string;
-    public tableDefinition;
+    public tableDefinition:any;
 
-    setTableDefinition(tableDefinition = {}) {
+    setTableDefinition(tableDefinition:any = {}) {
         this.tableDefinition = tableDefinition;
         this.tableName = tableDefinition['model'] || '';
     }
@@ -28,10 +28,11 @@ export class Rule implements Sequelizable, Cloneable<Rule> {
         this.operand = operand || '';
         this.isDynamic = isDynamic || false;
         this.value = value || '';
-        this.columnLabel = columnLabel;
-        this.valueLabel = valueLabel;
-        this.operator = operator;
-        this.displayType = displayType;
+        this.columnLabel = columnLabel || '';
+        this.valueLabel = valueLabel || '';
+        this.operator = operator || '';
+        this.displayType = displayType || '';
+        this.tableName='';
         this.setTableDefinition(tableDefinition);
     }
 
@@ -68,7 +69,7 @@ export class Rule implements Sequelizable, Cloneable<Rule> {
         this.columnLabel = columnLabel;
     }
 
-    populatLabels(columnName, idName) {
+    populatLabels(columnName:any, idName:any) {
         this.columnLabel = columnName;
         this.valueLabel = idName;
     }
