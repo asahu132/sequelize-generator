@@ -1,0 +1,23 @@
+{
+  "name": "sequelize-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build" : "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asahu132/sequelize-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asahu132/sequelize-generator/issues"
+  },
+  "homepage": "https://github.com/asahu132/sequelize-generator#readme",
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
