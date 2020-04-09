@@ -1,5 +1,5 @@
 {
-  "name": "json-to-sequelize",
+  "name": "json-sequelizer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
