@@ -1,14 +1,15 @@
-import { Sequelizable } from "./sequelize";
-import { Cloneable } from "./cloneable";
 import { Query } from "./query";
 import { Sort } from "./sort";
+import { Sequelizable } from "./sequelize";
 import { Rule } from "./rule";
+import { Cloneable } from "./cloneable";
 export declare class Filter implements Sequelizable, Cloneable<Filter> {
     context: {};
     queryGroup: Query[];
     sortBy: Sort[];
     queryGroupMergeOperator: string;
     static merge(filters: Filter[]): Filter;
+    static parse(filter: any): Filter;
     constructor(queryGroup?: Query[], sortBy?: Sort[]);
     setTableDefinition(tableDefinition: any): void;
     isEmpty(): boolean;
@@ -18,9 +19,11 @@ export declare class Filter implements Sequelizable, Cloneable<Filter> {
     checkValidSortCondition(): boolean;
     hasEmptyRules(): boolean;
     hasDynamicVariables(): boolean;
-    sequelize(): any;
+    unsequelize(sequelized: any): this;
+    sequelize(): {};
     clone(): Filter;
     toString(): string;
+    stringify(): string;
     getAllRules(): Rule[];
     removeRule(rule: Rule): void;
     reset(): void;

@@ -10,7 +10,7 @@ export class ObjectUtil {
   }
 
   static values(obj: any): any[] {
-    const values = []
+    const values:any = []
     for (const key in obj) {
       if (obj.hasOwnProperty(key)) {
         values.push(obj[key]);
