@@ -4,7 +4,7 @@ import {Query} from "./query";
 import {Sort} from "./sort";
 import {FilterRecordModel} from "./filter-record.model";
 
-export default{
+export {
     Filter,Rule,Query,Sort,FilterRecordModel
 }
 

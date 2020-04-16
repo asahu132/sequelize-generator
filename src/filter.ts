@@ -26,7 +26,10 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
       return returnedFilter;
     }
 
-    static parse(filter: any): Filter {
+    static build(filter: any): Filter{
+        if (typeof filter === 'string'){
+           filter = JSON.parse(filter)
+        }
         return new Filter(filter.queryGroup, filter.sort);
     }
 
@@ -121,6 +124,9 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
         };
       }
       return sequalize;
+    }
+    sequelizeString(){
+        return JSON.stringify(this.sequelize());
     }
     clone(): Filter {
       return new Filter(this.queryGroup.map((query) => query.clone()), this.sortBy.map((sort) => sort.clone()));
