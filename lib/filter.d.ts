@@ -9,7 +9,7 @@ export declare class Filter implements Sequelizable, Cloneable<Filter> {
     sortBy: Sort[];
     queryGroupMergeOperator: string;
     static merge(filters: Filter[]): Filter;
-    static parse(filter: any): Filter;
+    static build(filter: any): Filter;
     constructor(queryGroup?: Query[], sortBy?: Sort[]);
     setTableDefinition(tableDefinition: any): void;
     isEmpty(): boolean;
@@ -21,6 +21,7 @@ export declare class Filter implements Sequelizable, Cloneable<Filter> {
     hasDynamicVariables(): boolean;
     unsequelize(sequelized: any): this;
     sequelize(): {};
+    sequelizeString(): string;
     clone(): Filter;
     toString(): string;
     stringify(): string;

@@ -19,7 +19,7 @@ export class FilterRecordModel {
 
   toFilterBuilderModel(): Filter {
     if (!this.filter) {
-      this.filter = Filter.parse(JSON.parse(this.condition));
+      this.filter = Filter.build(this.condition);
     }
     return this.filter;
   }
