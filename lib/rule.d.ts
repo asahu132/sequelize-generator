@@ -13,7 +13,7 @@ export declare class Rule implements Sequelizable, Cloneable<Rule> {
     tableDefinition: any;
     setTableDefinition(tableDefinition?: {}): void;
     hasDynamicVariables(): boolean;
-    constructor(columnName?: string, operand?: string, isDynamic?: boolean, value?: string, displayType?: string, operator?: string, columnLabel?: string, valueLabel?: string, tableDefinition?: any);
+    constructor(columnName?: string, operand?: string, isDynamic?: boolean, value?: any, displayType?: string, operator?: string, columnLabel?: string, valueLabel?: string, tableDefinition?: any);
     unsequelize(sequelized: any): this;
     sequelize(): any;
     clone(): Rule;
