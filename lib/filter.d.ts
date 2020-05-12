@@ -18,6 +18,7 @@ export declare class Filter implements Sequelizable, Cloneable<Filter> {
     hasInValidSortCondition(): boolean;
     checkValidSortCondition(): boolean;
     hasEmptyRules(): boolean;
+    hasInvalidRules(): boolean;
     hasDynamicVariables(): boolean;
     unsequelize(sequelized: any): this;
     sequelize(): {};

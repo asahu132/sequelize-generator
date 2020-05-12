@@ -120,6 +120,17 @@ export class Rule implements Sequelizable, Cloneable<Rule> {
       if (this.operand === 'Is Empty' || this.operand === 'Is Not Empty') {
         return typeof this.columnName !== 'undefined';
       }
-      return !!(this.columnName && this.operand && (this.value ? this.value.toString() : this.value));
+      return (!this.columnName && !this.operand && !(this.value ? this.value.toString() : this.value));
+    }
+
+    isInvalid() {
+        if (this.isEmpty()) {
+            return false;
+        } else {
+            if (this.operand === 'Is Empty' || this.operand === 'Is Not Empty') {
+                return typeof this.columnName !== 'undefined';
+            }
+            return !!(this.columnName && this.operand && (this.value ? this.value.toString() : this.value));
+        }
     }
   }

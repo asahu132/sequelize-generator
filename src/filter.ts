@@ -70,7 +70,9 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     hasEmptyRules() {
       return (this.queryGroup.length === 0 || this.getAllRules().filter(rule => !rule.isEmpty()).length > 0);
     }
-  
+    hasInvalidRules(){
+        return  (this.queryGroup.length === 0 || this.getAllRules().filter(rule => !rule.isEmpty()).length > 0);
+    }
     hasDynamicVariables() {
       return this.queryGroup.filter((query) => query.hasDynamicVariables()).length > 0;
     }

@@ -30,4 +30,5 @@ export declare class Rule implements Sequelizable, Cloneable<Rule> {
         tableName: string;
     };
     isEmpty(): boolean;
+    isInvalid(): boolean;
 }
