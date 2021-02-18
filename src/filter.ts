@@ -10,6 +10,9 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     public queryGroup: Query[];
     public sortBy: Sort[];
     public queryGroupMergeOperator = 'OR';
+    public include: Filter[] = [];
+    public model: string = '';
+    public alias: string = '';
     static merge(filters: Filter[]): Filter {
       const returnedFilter = filters[0].clone();
       returnedFilter.queryGroupMergeOperator = 'AND';
@@ -22,6 +25,9 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
             returnedFilter.sortBy.push(sort);
           }
         });
+      filter.include.forEach((include) => {
+          returnedFilter.include.push(include);
+      });
       });
       return returnedFilter;
     }
@@ -30,12 +36,15 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
         if (typeof filter === 'string'){
            filter = JSON.parse(filter)
         }
-        return new Filter(filter.queryGroup, filter.sort);
+        return new Filter(filter.queryGroup, filter.sort, filter.model, filter.alias, filter.include);
     }
 
-    constructor(queryGroup?: Query[], sortBy?: Sort[]) {
+    constructor(queryGroup?: Query[], sortBy?: Sort[], model?: string, alias?: string, include?: Filter[]) {
+      this.model = model || '';
+      this.alias = alias || '';
       this.queryGroup = queryGroup ? queryGroup.map(group => new Query(group.condition, group.rules)) : [];
       this.sortBy = sortBy ? sortBy.map(sort => new Sort(sort.columnName, sort.value)) : [];
+      this.include = include ? include.map(include => Filter.build(include)) : []
     }
   
     setTableDefinition(tableDefinition) {
@@ -44,7 +53,7 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
       });
     }
     isEmpty() {
-      return this.queryGroup.length === 0 && this.sortBy.length === 0;
+      return this.queryGroup.length === 0 && this.sortBy.length === 0 && this.include.length ===0;
     }
   
     hasEmptyQueryGroup() {
@@ -78,6 +87,8 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     }
   
     unsequelize(sequelized: any): this {
+      this.model = sequelized.model;
+      this.alias = sequelized.as;
       if (Object.keys(sequelized).length > 0) {
         let sequelizedQueryGroups:any = [];
         if (Array.isArray(sequelized.where)) {
@@ -103,6 +114,11 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
           });
         }
         this.sortBy = sequelized.order && sequelized.order.map((seq) => new Sort().unsequelize(seq)) || [];
+        if(sequelized.include && sequelized.include.length>0){
+            sequelized.include.forEach(include=>{
+                this.include.push(new Filter().unsequelize(include));
+            })
+        }
       }
       return this;
     }
@@ -125,13 +141,26 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
           [SEQUELIZE_OPERATORS[this.queryGroupMergeOperator].operator]: queryGroup
         };
       }
+        if (this.model) {
+            sequalize['model'] = this.model;
+        }
+        if (this.alias) {
+            sequalize['as'] = this.alias;
+        }
+      if(this.include && this.include.length>0){
+          sequalize['include'] = []
+          const include= this.include.map(include=>{
+              sequalize['include'].push(include.sequelize())
+          })
+      }
       return sequalize;
     }
     sequelizeString(){
         return JSON.stringify(this.sequelize());
     }
     clone(): Filter {
-      return new Filter(this.queryGroup.map((query) => query.clone()), this.sortBy.map((sort) => sort.clone()));
+      return new Filter(this.queryGroup.map((query) => query.clone()), this.sortBy.map((sort) => sort.clone()), this.model, this.alias,
+          this.include.map(include=>include.clone()));
     }
     toString() {
       let str = '';
