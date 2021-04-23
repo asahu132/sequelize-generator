@@ -15,6 +15,9 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
     public alias: string = '';
     static merge(filters: Filter[]): Filter {
       const returnedFilter = filters[0].clone();
+      if(returnedFilter.queryGroup.length){
+        returnedFilter.queryGroup = [new Query(returnedFilter.queryGroupMergeOperator, returnedFilter.queryGroup)];
+      }
       returnedFilter.queryGroupMergeOperator = 'AND';
       filters.slice(1).map(filter => filter.clone()).forEach((filter) => {
         if (filter.queryGroup.length > 0) {
@@ -36,7 +39,7 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
         if (typeof filter === 'string'){
            filter = JSON.parse(filter)
         }
-        return new Filter(filter.queryGroup, filter.sort, filter.model, filter.alias, filter.include);
+        return new Filter(filter.queryGroup, filter.sortBy, filter.model, filter.alias, filter.include);
     }
 
     constructor(queryGroup?: Query[], sortBy?: Sort[], model?: string, alias?: string, include?: Filter[]) {
@@ -203,8 +206,11 @@ export class Filter implements Sequelizable, Cloneable<Filter> {
   
     removeRule(rule: Rule) {
       if (rule) {
-        this.queryGroup.forEach((queryGroupEntry) => {
+        this.queryGroup.forEach((queryGroupEntry,index) => {
           queryGroupEntry.removeRule(rule);
+            if (!queryGroupEntry.rules.length) {
+                this.queryGroup.splice(index, 1);
+            }
         });
       }
     }
