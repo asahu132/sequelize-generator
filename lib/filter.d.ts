@@ -8,9 +8,12 @@ export declare class Filter implements Sequelizable, Cloneable<Filter> {
     queryGroup: Query[];
     sortBy: Sort[];
     queryGroupMergeOperator: string;
+    include: Filter[];
+    model: string;
+    alias: string;
     static merge(filters: Filter[]): Filter;
     static build(filter: any): Filter;
-    constructor(queryGroup?: Query[], sortBy?: Sort[]);
+    constructor(queryGroup?: Query[], sortBy?: Sort[], model?: string, alias?: string, include?: Filter[]);
     setTableDefinition(tableDefinition: any): void;
     isEmpty(): boolean;
     hasEmptyQueryGroup(): boolean;
